@@ -8,7 +8,7 @@ module.exports = (app, channel) => {
     
     const service = new ShoppingService();
 
-  //  SubscribeMessage(channel, service)
+    SubscribeMessage(channel, service)
 
     app.post('/order',UserAuth, async (req,res,next) => {
 

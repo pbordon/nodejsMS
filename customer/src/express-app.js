@@ -12,11 +12,10 @@ module.exports = async (app) => {
     //api
     appEvents(app);
 
- /*
-    const channel = await CreateChannel()
+ 
+    const channel = await CreateChannel();
     customer(app, channel);
-    */
-    customer(app);
+ 
     // error handling
     
 }

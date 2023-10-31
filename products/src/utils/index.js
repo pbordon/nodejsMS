@@ -84,8 +84,7 @@ module.exports.PublishShoppingEvent = async (payload) => {
 
 module.exports.CreateChannel = async () => {
   try {
-    const connection = 
-    await amqplib.connect(MSG_QUEUE_URL);
+    const connection =  await amqplib.connect(MSG_QUEUE_URL);
     const channel = await connection.createChannel();
     await channel.assertQueue(EXCHANGE_NAME, "direct", { durable: true });
     return channel;
@@ -96,11 +95,40 @@ module.exports.CreateChannel = async () => {
   }
 };
 
+
+module.exports.CreateChannel2 = async () => {
+  let connection;
+  try {
+    const text = {
+      item_id: "macbook",
+      text: "This is a sample message to send receiver to check the ordered Item Availablility",
+    };
+    connection = await amqplib.connect(MSG_QUEUE_URL);
+    const channel = await connection.createChannel();
+
+    await channel.assertQueue("EXCHANGE_NAME", { durable: true });
+
+    channel.sendToQueue("shopping_service", Buffer.from(JSON.stringify(text)));
+    console.log(" [x] Sent '%s'", text);
+    await channel.close();
+  } catch (err) {
+    console.warn(err);
+  } finally {
+    if (connection) await connection.close();
+  }};
+
 module.exports.PublishMessage = (channel, service, msg) => {
-  channel.publish(EXCHANGE_NAME, service, Buffer.from(msg));
-  console.log("Sent: ", msg);
+  try {
+   // channel.publish(EXCHANGE_NAME, service, Buffer.from(msg));
+   channel.publish(EXCHANGE_NAME, '', Buffer.from(msg));
+    console.log("Sent: ", msg);
+} catch (error) {
+  console.log(err);
+}
+
 };
 
+/*
 module.exports.SuscribeMessage = async (channel, service,binding_key) => {
   const appQueue = await channel.assertQueue("ONLINE_STORE");
   channel.publish(appQueue.queue, EXCHANGE_NAME, binding_key);
@@ -109,3 +137,4 @@ module.exports.SuscribeMessage = async (channel, service,binding_key) => {
     console.log(data.content.toString() );
   })
 };
+*/

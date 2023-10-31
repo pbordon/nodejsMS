@@ -4,6 +4,7 @@ const {
   PublishCustomerEvent,
   PublishShoppingEvent,
   PublishMessage,
+  CreateChannel2
 } = require("../utils");
 const UserAuth = require("./middlewares/auth");
 
@@ -90,6 +91,7 @@ module.exports = (app, channel) => {
       "ADD_TO_CART"
     );
 
+    //CreateChannel2();
     // PublishCustomerEvent(data);
     // PublishShoppingEvent(data);
 
